@@ -1,12 +1,18 @@
 const fs = require('fs');
 const path = require('path');
+const {
+    animals
+} = require('./data/animals.json');
 
 const express = require('express');
 const PORT = process.env.PORT || 3001;
 const app = express();
-const {
-    animals
-} = require('./data/animals.json');
+
+// parse incoming string or array data
+app.use(express.urlencoded({ extended: true }));
+// parse incoming JSON data
+app.use(express.json()); 
+
 
 // first describes the route the client will have to fetch from; second is callback function that will execute every time the route is accessed with a GET request
 function filterByQuery(query, animalsArray) {
@@ -93,11 +99,6 @@ app.get('/api/animals/:id', (req, res) => {
     }
 });
 
-// parse incoming string or array data
-app.use(express.urlencoded({ extended: true }));
-// parse incoming JSON data
-app.use(express.json()); 
-
 
 app.post('/api/animals', (req, res) => {
     //requests server to accept data
@@ -122,8 +123,6 @@ app.post('/api/animals', (req, res) => {
     
     
 });
-
-
 app.listen(PORT, () => {
     console.log(`API server now on port ${PORT}`);
 });

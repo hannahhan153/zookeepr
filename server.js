@@ -9,9 +9,11 @@ const PORT = process.env.PORT || 3001;
 const app = express();
 
 // parse incoming string or array data
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({
+    extended: true
+}));
 // parse incoming JSON data
-app.use(express.json()); 
+app.use(express.json());
 app.use(express.static('public'));
 
 // first describes the route the client will have to fetch from; second is callback function that will execute every time the route is accessed with a GET request
@@ -57,7 +59,9 @@ function createNewAnimal(body, animalsArray) {
     fs.writeFileSync(
         path.join(__dirname, './data/animals.json'),
         // dirname represents directory of the file we execute code in
-        JSON.stringify({ animals: animalsArray }, null, 2)
+        JSON.stringify({
+            animals: animalsArray
+        }, null, 2)
     );
     // console.log(body);
     // function main code will go here
@@ -119,16 +123,28 @@ app.post('/api/animals', (req, res) => {
         // res.json sends data back to the client
         res.json(req.body);
     }
-    
-    
-    
+
+
+
 });
 
 app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/index.html'));
+});
+
+app.get('/animals', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/animals.html'));
+});
+
+app.get('/zookeepers', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/zookeepers.html'));
+})
+
+// * will act as a wildcard, meaning any route that wasn't previously defined will fall under this request and will receive the homepage as the response.
+app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, './public/index.html'));
   });
 
 app.listen(PORT, () => {
     console.log(`API server now on port ${PORT}`);
 });
-

@@ -12,7 +12,7 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 // parse incoming JSON data
 app.use(express.json()); 
-
+app.use(express.static('public'));
 
 // first describes the route the client will have to fetch from; second is callback function that will execute every time the route is accessed with a GET request
 function filterByQuery(query, animalsArray) {
@@ -123,6 +123,11 @@ app.post('/api/animals', (req, res) => {
     
     
 });
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/index.html'));
+  });
+
 app.listen(PORT, () => {
     console.log(`API server now on port ${PORT}`);
 });

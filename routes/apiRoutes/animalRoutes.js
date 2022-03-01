@@ -1,30 +1,8 @@
-const apiRoutes = require('./routes/apiRoutes');
-const htmlRoutes = require('./routes/htmlRoutes');
-
+const { filterByQuery, findById, createNewAnimal, validateAnimal } = require('../../lib/animals');
+const { animals } = require('../../data/animals');
 const router = require('express').Router();
 
-const fs = require('fs');
-const path = require('path');
-const {
-    animals
-} = require('./data/animals.json');
-
-const express = require('express');
-const PORT = process.env.PORT || 3001;
-const app = express();
-
-app.use(express.static('public'));
-// parse incoming string or array data
-app.use(express.urlencoded({
-    extended: true
-}));
-// parse incoming JSON data
-app.use(express.json());
-
-app.use('/api', apiRoutes);
-app.use('/', htmlRoutes);
-
-app.get('/api/animals', (req, res) => {
+router.get('/animals', (req, res) => {
     let results = animals;
     if (req.query) {
         results = filterByQuery(req.query, results);
@@ -32,7 +10,7 @@ app.get('/api/animals', (req, res) => {
     res.json(results);
 });
 
-app.get('/api/animals/:id', (req, res) => {
+router.get('/animals/:id', (req, res) => {
     const result = findById(req.params.id, animals);
     if (result) {
         res.json(result);
@@ -41,8 +19,7 @@ app.get('/api/animals/:id', (req, res) => {
     }
 });
 
-
-app.post('/api/animals', (req, res) => {
+router.post('/animals', (req, res) => {
     //requests server to accept data
     // package up data as an object and send to server
     // req.body is where incoming content will be 
@@ -66,6 +43,4 @@ app.post('/api/animals', (req, res) => {
 
 });
 
-app.listen(PORT, () => {
-    console.log(`API server now on port ${PORT}`);
-});
+module.exports  = router;

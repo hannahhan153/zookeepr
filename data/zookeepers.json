@@ -71,6 +71,12 @@
       "age": 43,
       "favoriteAnimal": "donkey",
       "id": "11"
+    },
+    {
+      "name": "joseph",
+      "age": 56,
+      "favoriteAnimal": "sheep",
+      "id": "12"
     }
   ]
 }
